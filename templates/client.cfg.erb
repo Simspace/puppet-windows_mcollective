@@ -1,0 +1,16 @@
+collectives = mcollective
+connector = activemq
+direct_addressing = 1
+libdir = <%= @windows_programfilesx86 %>\Puppet Labs\mcollective\plugins
+logger_type = console
+loglevel = warn
+main_collective = mcollective
+plugin.activemq.base64 = yes
+plugin.activemq.pool.1.host = <%= @server %>
+plugin.activemq.pool.1.password = marionette
+plugin.activemq.pool.1.port = 61613
+plugin.activemq.pool.1.user = mcollective
+plugin.activemq.pool.size = 1
+plugin.activemq.randomize = true
+plugin.psk = changemeplease
+securityprovider = psk

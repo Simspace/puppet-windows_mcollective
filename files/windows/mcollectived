@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+# For security reasons, ensure that '.' is not on the load path
+# This is primarily for 1.8.7 since 1.9.2+ doesn't put '.' on the load path
+$LOAD_PATH.delete '.'
+
+require 'mcollective'
+require 'getoptlong'
+
+opts = GetoptLong.new(
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+  [ '--config', '-c', GetoptLong::REQUIRED_ARGUMENT],
+  [ '--pidfile', '-p', GetoptLong::REQUIRED_ARGUMENT]
+)
+
+if MCollective::Util.windows?
+  configfile = File.join(MCollective::Util.windows_prefix, "etc", "server.cfg")
+else
+  configfile = "/etc/mcollective/server.cfg"
+end
+pid = ""
+
+opts.each do |opt, arg|
+  case opt
+    when '--help'
+      puts "Usage: mcollectived.rb [--config /path/to/config] [--pidfile /path/to/pid]"
+      exit
+    when '--config'
+      configfile = arg
+    when '--pidfile'
+      pid = arg
+  end
+end
+
+config = MCollective::Config.instance
+
+config.loadconfig(configfile) unless config.configured
+
+MCollective::Log.info("The Marionette Collective #{MCollective::VERSION} started logging at #{config.loglevel} level")
+
+if config.daemonize
+  MCollective::Log.debug("Starting in the background (#{config.daemonize})")
+
+  if MCollective::Util.windows?
+    require 'mcollective/windows_daemon'
+    MCollective::WindowsDaemon.daemonize_runner
+  else
+    require 'mcollective/unix_daemon'
+    MCollective::UnixDaemon.daemonize_runner(pid)
+  end
+else
+  MCollective::Log.debug("Starting in the foreground")
+  runner = MCollective::Runner.new(configfile)
+  runner.main_loop
+end

@@ -1,0 +1,21 @@
+collectives = mcollective
+connector = activemq
+daemonize = 1
+direct_addressing = 1
+factsource = yaml
+libdir = <%= @windows_programfilesx86 %>\Puppet Labs\mcollective\plugins
+logfile = <%= @windows_programfilesx86 %>\Puppet Labs\mcollective\mcollective.log
+loglevel = info
+main_collective = mcollective
+plugin.activemq.base64 = yes
+plugin.activemq.pool.1.host = <%= @server %>
+plugin.activemq.pool.1.password = marionette
+plugin.activemq.pool.1.port = 61613
+plugin.activemq.pool.1.user = mcollective
+plugin.activemq.pool.size = 1
+plugin.activemq.randomize = true
+plugin.psk = changemeplease
+plugin.yaml = <%= @windows_programfilesx86 %>\Puppet Labs\mcollective\etc\facts.yaml
+plugin.puppet.config = <%- etcdir = puppet_vardir.gsub('var','etc') -%><%= etcdir %>
+plugin.shell.state_directory = <%- rundir = puppet_vardir + '/run' -%><%= rundir %>
+securityprovider = psk
