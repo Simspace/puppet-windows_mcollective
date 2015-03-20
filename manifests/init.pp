@@ -32,6 +32,8 @@ class windows_mcollective (
     returns => [0],
     path => $::path,
     require => [ Acl["$mcollective_path\\bin\\register_service.bat"], Staging::Extract['mcollective-puppet-agent-1.9.3.zip'], Staging::Extract['mcollective-puppet-agent-1.9.3.zip'] ],
+    refreshonly => true,
+    subscribe => File['mcollective-server-cfg'],
   }
 
   staging::file { 'mcollective-2.5.2.zip':
