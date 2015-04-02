@@ -76,6 +76,7 @@ class windows_mcollective (
     source => "puppet:///modules/windows_mcollective/windows",
     require => Staging::Extract['mcollective-2.5.2.zip'],
     recurse => true,
+    notify => Exec['register-mcollective'],
   }
 
   file { 'mcollective-client-cfg':

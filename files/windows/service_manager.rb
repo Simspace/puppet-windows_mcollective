@@ -95,7 +95,27 @@ case action
 
       puts "Service %s installed" % [options[:name]]
     else
-      puts "Service %s already installed" % [options[:name]]
+      Service.stop(options[:name]) unless Service.status(options[:name]).current_state == 'stopped'
+
+      while Service.status(options[:name]).current_state != 'stopped'
+        puts "Waiting for service %s to stop" % [options[:name]]
+        sleep 1
+      end
+
+      Service.delete(options[:name])
+
+      puts "Service %s removed" % [options[:name]]
+
+      Service.new(
+        :service_name => options[:name],
+        :display_name => options[:display_name],
+        :description => options[:description],
+        :binary_path_name => options[:command],
+        :service_type => Service::SERVICE_WIN32_OWN_PROCESS,
+        :start_type => start_type
+      )
+
+      puts "Service %s installed" % [options[:name]]
     end
 
     if Service.status(options[:name]).current_state == 'running'
