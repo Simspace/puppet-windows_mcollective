@@ -31,7 +31,7 @@ class windows_mcollective (
     command => "\"${mcollective_path}\\bin\\register_service.bat\"",
     returns => [0],
     path => $::path,
-    require => [ Acl["$mcollective_path\\bin\\register_service.bat"], Staging::Extract['mcollective-puppet-agent-1.9.3.zip'], Staging::Extract['mcollective-puppet-agent-1.9.3.zip'] ],
+    require => [ Acl["$mcollective_path\\bin\\register_service.bat"], Staging::Extract['mcollective-puppet-agent-1.9.3.zip'], Staging::Extract['mcollective-shell-agent-0.0.2.zip'] ],
     refreshonly => true,
     subscribe => File['mcollective-server-cfg'],
   }
@@ -58,11 +58,13 @@ class windows_mcollective (
 
   staging::extract { 'mcollective-puppet-agent-1.9.3.zip':
     target => "${mcollective_path}\\plugins",
+    creates => "$mcollective_path\\plugins\\mcollective\\agent\\puppet.rb",
     require => Staging::File['mcollective-puppet-agent-1.9.3.zip'],
   }
 
   staging::extract { 'mcollective-shell-agent-0.0.2.zip':
     target => "${mcollective_path}\\plugins",
+    creates => "$mcollective_path\\plugins\\mcollective\\agent\\shell.rb",
     require => Staging::File['mcollective-shell-agent-0.0.2.zip'],
   }
 
