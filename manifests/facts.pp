@@ -14,7 +14,7 @@ class windows_mcollective::facts ()
 
   include windows_mcollective
  
-  file{"${::windows_programfilesx86}\\Puppet Labs\\mcollective\\etc\\facts.yaml":
+  file{"${::programfilesx86}\\Puppet Labs\\mcollective\\etc\\facts.yaml":
    content => template('windows_mcollective/facts.yaml.erb'),
    require => Exec['register-mcollective'],
   }
