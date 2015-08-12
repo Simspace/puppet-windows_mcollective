@@ -24,7 +24,7 @@ class windows_mcollective (
   include staging
   include windows_mcollective::facts
 
-  $puppet_path = "${::windows_programfilesx86}\\Puppet Labs"
+  $puppet_path = "${::programfilesx86}\\Puppet Labs"
   $mcollective_path = "${puppet_path}\\mcollective"
 
   exec { 'register-mcollective':
