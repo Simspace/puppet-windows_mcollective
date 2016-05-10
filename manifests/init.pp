@@ -36,6 +36,12 @@ class windows_mcollective (
     subscribe => File['mcollective-server-cfg'],
   }
 
+  service { 'mcollectived':
+    ensure => 'running',
+    enable => 'true',
+    require => Exec['register-mcollective'],
+  }
+
   staging::file { 'mcollective-2.5.2.zip':
     source => 'puppet:///modules/windows_mcollective/mcollective-2.5.2.zip',
   }
