@@ -29,10 +29,10 @@ class windows_mcollective (
 
   exec { 'register-mcollective':
     command => "\"${mcollective_path}\\bin\\register_service.bat\"",
+    unless => "sc.exe query mcollectived",
     returns => [0],
     path => $::path,
     require => [ Acl["$mcollective_path\\bin\\register_service.bat"], Staging::Extract['mcollective-puppet-agent-1.9.3.zip'], Staging::Extract['mcollective-shell-agent-0.0.2.zip'] ],
-    refreshonly => true,
     subscribe => File['mcollective-server-cfg'],
   }
 
