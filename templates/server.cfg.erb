@@ -16,6 +16,6 @@ plugin.activemq.pool.size = 1
 plugin.activemq.randomize = true
 plugin.psk = changemeplease
 plugin.yaml = <%= @programfilesx86 %>\Puppet Labs\mcollective\etc\facts.yaml
-plugin.puppet.config = <%- etcdir = puppet_vardir.gsub('var','etc') -%><%= etcdir %>
-plugin.shell.state_directory = <%- rundir = puppet_vardir + '/run' -%><%= rundir %>
+plugin.puppet.config = <%- etcdir = @puppet_vardir.gsub('var','etc') -%><%= etcdir %>
+plugin.shell.state_directory = <%- rundir = @puppet_vardir + '/run' -%><%= rundir %>
 securityprovider = psk
